@@ -10,8 +10,10 @@ export const sendEmail = (req, res) => {
     const fromEmail = new helper.Email('mauricio.esquivel.rogel.18@dartmouth.edu');
     const toEmail = new helper.Email('mauricio.esquivel.rogel.18@dartmouth.edu');
     const subject = 'Activity in Website';
-    const content = new helper.Content('text/plain', `Hola Mau, ${req.name} de correo ${req.email} te mandó el siguiente mensaje:\n\n\"${req.message}\"`);
+    const content = new helper.Content('text/plain', `Hola Mau, ${req.body.name} de correo ${req.body.email} te mandó el siguiente mensaje:\n\n\"${req.body.content}\"`);
     const mail = new helper.Mail(fromEmail, subject, toEmail, content);
+
+    console.log(req);
 
     const request = sg.emptyRequest({
       method: 'POST',
@@ -26,9 +28,7 @@ export const sendEmail = (req, res) => {
           res.json({ error: `${error}` });
         } else {
           console.log('hahaha');
-          console.log(response.statusCode);
-          console.log(response.body);
-          console.log(response.headers);
+          console.log(`Hola Mau, ${req.body.name} de correo ${req.body.email} te mandó el siguiente mensaje:\n\n\"${req.body.content}\"`);
 
           res.json({ message: 'Email verification sent' });
         }
