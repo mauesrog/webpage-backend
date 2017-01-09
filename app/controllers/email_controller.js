@@ -30,7 +30,7 @@ export const sendEmail = (req, res) => {
           console.log('hahaha');
           console.log(`Hola Mau, ${req.body.name} de correo ${req.body.email} te mandó el siguiente mensaje:\n\n\"${req.body.content}\"`);
 
-          res.json({ message: 'Email verification sent' });
+          res.json({ message: 'Thank you, I will contact you shortly.' });
         }
       } catch (err) {
         res.json({ error: `${err}` });
