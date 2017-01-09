@@ -8,7 +8,7 @@ const sg = require('sendgrid')(config.sendgridSecret);
 export const sendEmail = (req, res) => {
   try {
     const fromEmail = new helper.Email('mauricio.esquivel.rogel.18@dartmouth.edu');
-    const toEmail = new helper.Email('maurirogel@yahoo.com.mx');
+    const toEmail = new helper.Email('mauricio.esquivel.rogel.18@dartmouth.edu');
     const subject = 'Activity in Website';
     const content = new helper.Content('text/plain', `Hola Mau, ${req.name} de correo ${req.email} te mandó el siguiente mensaje:\n\n\"${req.message}\"`);
     const mail = new helper.Mail(fromEmail, subject, toEmail, content);
