@@ -12,7 +12,7 @@ router.route('/contact')
       .post(Email.sendEmail);
 
 router.route('/drive')
-      .get(Drive.getResumeUrl)
-      .put(Drive.updateResume);
+      .get(Drive.getResumeUrl);
+      // .put(Drive.updateResume);
 
 export default router;
