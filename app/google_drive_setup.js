@@ -1,6 +1,7 @@
 // import fs from 'fs';
 // import readline from 'readline';
 import googleAuth from 'google-auth-library';
+import config from './config';
 
 const authObj = {};
 
@@ -28,9 +29,9 @@ function authorize(credentials) {
     try {
       // const clientSecret = credentials.installed.client_secret;
       // const clientId = credentials.installed.client_id;
-      const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
-      const clientId = process.env.GOOGLE_CLIENT_ID;
-      const redirectUrl = process.env.GOOGLE_REDIRECT_URL;
+      const clientSecret = config.google.clientSecret;
+      const clientId = config.google.clientId;
+      const redirectUrl = config.google.redirectUrl;
       // credentials.installed.redirect_uris[0];
       const auth = new googleAuth();
       const oauth2Client = new auth.OAuth2(clientId, clientSecret, redirectUrl);
@@ -39,10 +40,10 @@ function authorize(credentials) {
 
       if (process.env.GOOGLE_ACCESS_TOKEN) {
         oauth2Client.credentials = {
-          access_token: process.env.GOOGLE_ACCESS_TOKEN,
-          refresh_token: process.env.GOOGLE_REFRESH_TOKEN,
-          token_type: process.env.GOOGLE_TOKEN_TYPE,
-          expiry_date: parseInt(process.env.GOOGLE_EXPIRY_DATE, 10),
+          access_token: config.google.accessToken,
+          refresh_token: config.google.refreshToken,
+          token_type: config.google.tokenType,
+          expiry_date: config.google.expiryDate,
         };
 
         resolve(oauth2Client);
