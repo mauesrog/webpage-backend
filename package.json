@@ -4,8 +4,8 @@
   "description": "",
   "author": "",
   "main": "app/server.js",
+  "test": "./node_modules/.bin/eslint **.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon app/server.js --exec babel-node",
     "start": "babel-node app/server.js",
     "drive-setup": "babel-node google_drive_setup.js",
