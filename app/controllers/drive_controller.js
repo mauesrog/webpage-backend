@@ -64,9 +64,13 @@ export const getResumeUrl = (req, res) => {
 export const updateResume = (req, res) => {
   try {
     const RESUME_METADATA = { name: 'CV Final.pdf', mimeType: 'application/pdf' };
-    const RESUME_MEDIA = {
-      body: fs.createReadStream('/Users/maurirogel/Documents/Dartmouth/CV Final.pdf'),
-    };
+    let RESUME_MEDIA;
+
+    if (process.env.OFFLINE) {
+      RESUME_MEDIA = {
+        body: fs.createReadStream('/Users/maurirogel/Documents/Dartmouth/CV Final.pdf'),
+      };
+    }
 
     listFiles().then(files => {
       try {
