@@ -20,7 +20,6 @@
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.15.2",
     "cors": "^2.7.1",
-    "dotenv": "^2.0.0",
     "express": "^4.14.0",
     "google-auth-library": "^0.10.0",
     "googleapis": "^16.1.0",
@@ -30,7 +29,8 @@
     "passport": "^0.3.2",
     "passport-jwt": "^2.1.0",
     "passport-local": "^1.0.0",
-    "sendgrid": "^4.7.1"
+    "sendgrid": "^4.7.1",
+    "dotenv": "^2.0.0"
   },
   "devDependencies": {
     "babel-eslint": "^6.1.2",
