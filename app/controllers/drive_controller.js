@@ -1,6 +1,6 @@
 import google from 'googleapis';
 import authObj from '../../google_drive_setup';
-import fs from 'fs';
+// import fs from 'fs';
 
 const drive = google.drive('v3');
 
@@ -61,70 +61,66 @@ export const getResumeUrl = (req, res) => {
   }
 };
 
-export const updateResume = (req, res) => {
-  try {
-    const RESUME_METADATA = { name: 'CV Final.pdf', mimeType: 'application/pdf' };
-    let RESUME_MEDIA;
-
-    if (process.env.OFFLINE) {
-      RESUME_MEDIA = {
-        body: fs.createReadStream('/Users/maurirogel/Documents/Dartmouth/CV Final.pdf'),
-      };
-    }
-
-    listFiles().then(files => {
-      try {
-        const auth = authObj.auth;
-        let fileId = null;
-        let i = 0;
-
-        while (fileId === null && i < files.length) {
-          if (files[i].name === 'CV Final.pdf') {
-            fileId = files[i].id;
-            i++;
-          }
-        }
-
-        if (fileId === null) {
-          res.json({ error: 'CV File not found on Google Drive.' });
-          return;
-        }
-        drive.files.delete({ auth, fileId }, (err3) => {
-          try {
-            if (err3) res.json({ error: `${err3}` });
-            drive.files.create({ auth, resource: RESUME_METADATA, media: RESUME_MEDIA }, (err, file) => {
-              try {
-                if (err) res.json({ error: `${err}` });
-                else {
-                  const resource = {
-                    value: null,
-                    type: 'anyone',
-                    role: 'reader',
-                    withLink: true,
-                  };
-
-                  drive.permissions.create({ fileId: file.id, resource, auth }, (err1) => {
-                    if (err1) res.json({ error: `${err1}` });
-                    else {
-                      console.log(file);
-                      res.json({ msg: `Successfully updated resume ${file.name} with id ${file.id}` });
-                    }
-                  });
-                }
-              } catch (error) {
-                res.json({ error: `${error}` });
-              }
-            });
-          } catch (error) {
-            res.json({ error: `${error}` });
-          }
-        });
-      } catch (error) {
-        res.json({ error: `${error}` });
-      }
-    })
-    .catch(err => { res.json({ error: `${err}` }); });
-  } catch (error) {
-    res.json({ error: `${error}` });
-  }
-};
+// export const updateResume = (req, res) => {
+//   try {
+//     const RESUME_METADATA = { name: 'CV Final.pdf', mimeType: 'application/pdf' };
+//     const RESUME_MEDIA = {
+//       body: fs.createReadStream('/Users/maurirogel/Documents/Dartmouth/CV Final.pdf'),
+//     };
+//
+//     listFiles().then(files => {
+//       try {
+//         const auth = authObj.auth;
+//         let fileId = null;
+//         let i = 0;
+//
+//         while (fileId === null && i < files.length) {
+//           if (files[i].name === 'CV Final.pdf') {
+//             fileId = files[i].id;
+//             i++;
+//           }
+//         }
+//
+//         if (fileId === null) {
+//           res.json({ error: 'CV File not found on Google Drive.' });
+//           return;
+//         }
+//         drive.files.delete({ auth, fileId }, (err3) => {
+//           try {
+//             if (err3) res.json({ error: `${err3}` });
+//             drive.files.create({ auth, resource: RESUME_METADATA, media: RESUME_MEDIA }, (err, file) => {
+//               try {
+//                 if (err) res.json({ error: `${err}` });
+//                 else {
+//                   const resource = {
+//                     value: null,
+//                     type: 'anyone',
+//                     role: 'reader',
+//                     withLink: true,
+//                   };
+//
+//                   drive.permissions.create({ fileId: file.id, resource, auth }, (err1) => {
+//                     if (err1) res.json({ error: `${err1}` });
+//                     else {
+//                       console.log(file);
+//                       res.json({ msg: `Successfully updated resume ${file.name} with id ${file.id}` });
+//                     }
+//                   });
+//                 }
+//               } catch (error) {
+//                 res.json({ error: `${error}` });
+//               }
+//             });
+//           } catch (error) {
+//             res.json({ error: `${error}` });
+//           }
+//         });
+//       } catch (error) {
+//         res.json({ error: `${error}` });
+//       }
+//     })
+//     .catch(err => { res.json({ error: `${err}` }); });
+//   } catch (error) {
+//     res.json({ error: `${error}` });
+//   }
+// };
