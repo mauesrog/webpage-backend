@@ -1,5 +1,5 @@
 import google from 'googleapis';
-import authObj from '../../google_drive_setup';
+import authObj from '../google_drive_setup';
 // import fs from 'fs';
 
 const drive = google.drive('v3');

@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "nodemon app/server.js --exec babel-node",
     "start": "babel-node app/server.js",
-    "drive-setup": "babel-node google_drive_setup.js",
+    "drive-setup": "babel-node app/google_drive_setup.js",
     "build": "babel app -d dist",
     "prod": "npm run build; node dist/server.js",
     "test": "./node_modules/.bin/eslint **.js"
