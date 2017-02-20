@@ -5,12 +5,20 @@
   "author": "",
   "main": "app/server.js",
   "scripts": {
+<<<<<<< HEAD
     "dev": "nodemon app/server.js --exec babel-node",
     "start": "babel-node app/server.js",
     "drive-setup": "babel-node app/google_drive_setup.js",
     "build": "babel app -d dist",
     "prod": "npm run build; node dist/server.js",
     "test": "./node_modules/.bin/eslint **.js"
+=======
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon app/server.js --exec babel-node",
+    "start": "babel-node app/server.js",
+    "build": "babel app -d dist",
+    "prod": "npm run build; node dist/server.js"
+>>>>>>> efede5aaf8ac8558b0338396b47de4f6454dc51b
   },
   "license": "ISC",
   "dependencies": {
@@ -20,17 +28,26 @@
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.15.2",
     "cors": "^2.7.1",
+<<<<<<< HEAD
     "express": "^4.14.0",
     "google-auth-library": "^0.10.0",
     "googleapis": "^16.1.0",
+=======
+    "dotenv": "^2.0.0",
+    "express": "^4.14.0",
+>>>>>>> efede5aaf8ac8558b0338396b47de4f6454dc51b
     "jwt-simple": "^0.5.0",
     "mongoose": "^4.5.8",
     "nodemailer": "^2.7.0",
     "passport": "^0.3.2",
     "passport-jwt": "^2.1.0",
     "passport-local": "^1.0.0",
+<<<<<<< HEAD
     "sendgrid": "^4.7.1",
     "dotenv": "^2.0.0"
+=======
+    "sendgrid": "^4.7.1"
+>>>>>>> efede5aaf8ac8558b0338396b47de4f6454dc51b
   },
   "devDependencies": {
     "babel-eslint": "^6.1.2",
