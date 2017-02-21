@@ -28,6 +28,7 @@
     "mongoose": "^4.5.8",
     "nodemailer": "^2.7.0",
     "passport": "^0.3.2",
+    "passport-custom": "^1.0.5",
     "passport-jwt": "^2.1.0",
     "passport-local": "^1.0.0",
     "sendgrid": "^4.7.1"
