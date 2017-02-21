@@ -1,19 +1,6 @@
 import google from 'googleapis';
-import fs from 'fs';
 
 const drive = google.drive('v3');
-
-fs.readFile('app/computeService.json', (err, content) => {
-  try {
-    if (err) console.log(err);
-    else {
-      const credentials = JSON.parse(content);
-      console.log(credentials);
-    }
-  } catch (error) {
-    console.log(error);
-  }
-});
 
 const listFiles = (auth) => {
   return new Promise((resolve, revoke) => {
