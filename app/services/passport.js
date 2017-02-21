@@ -1,26 +1,25 @@
 import CustomStrategy from 'passport-custom';
 import google from 'googleapis';
-import config from '../config';
 import passport from 'passport';
 import fs from 'fs';
 
-const clientEmail = config.googleClientEmail;
-const privateKey = config.googlePrivateKey;
 const scopes = ['https://www.googleapis.com/auth/drive'];
 
-let config2 = fs.readFileSync('app/computeService.json');
+let config = fs.readFileSync('app/computeService.json');
 
-if (config2 !== null) {
-  config2 = JSON.parse(config2);
-}
+if (config === null) throw new EvalError('Missing file');
 
-const jwtClient = new google.auth.JWT(config2.client_email, null, config2.private_key, scopes);
+config = JSON.parse(config);
+
+const clientEmail = config.client_email;
+const privateKey = config.private_key;
+
+const jwtClient = new google.auth.JWT(clientEmail, null, privateKey, scopes);
 
 const jwtLoginGoogle = new CustomStrategy((req, done) => {
   try {
     jwtClient.authorize((err, token) => {
       try {
-        console.log(config2.private_key, privateKey);
         if (err) done(`Unauthorized: ${err}`);
         else done(null, jwtClient);
       } catch (error) {
