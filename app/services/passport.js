@@ -3,8 +3,8 @@ import google from 'googleapis';
 import config from '../config';
 import passport from 'passport';
 
-const clientEmail = config.google.clientEmail;
-const privateKey = config.google.privateKey;
+const clientEmail = config.googleClientEmail;
+const privateKey = config.googlePrivateKey;
 const scopes = ['https://www.googleapis.com/auth/drive'];
 
 const jwtClient = new google.auth.JWT(clientEmail, null, privateKey, scopes);

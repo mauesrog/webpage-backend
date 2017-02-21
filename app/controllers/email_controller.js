@@ -3,7 +3,7 @@ import config from '../config';
 
 const helper = sendgrid.mail;
 
-const sg = require('sendgrid')(config.sendgrid.secret);
+const sg = require('sendgrid')(config.sendgridSecret);
 
 export const sendEmail = (req, res) => {
   try {
