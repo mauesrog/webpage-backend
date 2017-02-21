@@ -13,7 +13,7 @@ const jwtLoginGoogle = new CustomStrategy((req, done) => {
   try {
     jwtClient.authorize((err, token) => {
       try {
-        console.log(config, process.env);
+        console.log(clientEmail, privateKey, config);
         if (err) done(`Unauthorized: ${err}`);
         else done(null, jwtClient);
       } catch (error) {
