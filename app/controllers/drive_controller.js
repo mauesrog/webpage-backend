@@ -3,7 +3,7 @@ import fs from 'fs';
 
 const drive = google.drive('v3');
 
-fs.readFile('../computeService.json', (err, content) => {
+fs.readFile('app/computeService.json', (err, content) => {
   try {
     if (err) console.log(err);
     else {
