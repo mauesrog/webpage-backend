@@ -1,20 +1,19 @@
 import google from 'googleapis';
 import fs from 'fs';
-// import authObj from '../google_drive_setup';
-// import fs from 'fs';
 
 const drive = google.drive('v3');
 
-// const url = oauth2Client.generateAuthUrl({
-//   // 'online' (default) or 'offline' (gets refresh_token)
-//   access_type: 'offline',
-//
-//   // If you only need one scope you can pass it as a string
-//   scopes,
-//
-//   // Optional property that passes state parameters to redirect URI
-//   // state: { foo: 'bar' }
-// });
+fs.readFile('../computeService.json', (err, content) => {
+  try {
+    if (err) console.log(err);
+    else {
+      const credentials = JSON.parse(content);
+      console.log(credentials);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+});
 
 const listFiles = (auth) => {
   return new Promise((resolve, revoke) => {
