@@ -1,13 +1,24 @@
 import google from 'googleapis';
-import authObj from '../google_drive_setup';
+import fs from 'fs';
+// import authObj from '../google_drive_setup';
 // import fs from 'fs';
 
 const drive = google.drive('v3');
 
-const listFiles = () => {
+// const url = oauth2Client.generateAuthUrl({
+//   // 'online' (default) or 'offline' (gets refresh_token)
+//   access_type: 'offline',
+//
+//   // If you only need one scope you can pass it as a string
+//   scopes,
+//
+//   // Optional property that passes state parameters to redirect URI
+//   // state: { foo: 'bar' }
+// });
+
+const listFiles = (auth) => {
   return new Promise((resolve, revoke) => {
     try {
-      const auth = authObj.auth;
       drive.files.list({
         auth,
         pageSize: 10,
@@ -31,18 +42,44 @@ const listFiles = () => {
   });
 };
 
+function deleteFileIfExists(auth, fileId) {
+  return new Promise((resolve, revoke) => {
+    try {
+      if (fileId === null) {
+        resolve();
+        return;
+      }
+
+      drive.files.delete({ auth, fileId }, err => {
+        try {
+          if (err) revoke(err);
+          else resolve();
+        } catch (error) {
+          revoke(error);
+        }
+      });
+    } catch (error) {
+      revoke(error);
+    }
+  });
+}
+
 export const getResumeUrl = (req, res) => {
   try {
-    listFiles().then(files => {
+    const auth = req.user;
+
+    listFiles(auth).then(files => {
       try {
+        console.log(files);
         let resume = null;
         let i = 0;
 
         while (resume === null && i < files.length) {
           if (files[i].name === 'CV Final.pdf') {
             resume = files[i];
-            i++;
           }
+
+          i++;
         }
 
         if (resume === null) {
@@ -61,66 +98,64 @@ export const getResumeUrl = (req, res) => {
   }
 };
 
-// export const updateResume = (req, res) => {
-//   try {
-//     const RESUME_METADATA = { name: 'CV Final.pdf', mimeType: 'application/pdf' };
-//     const RESUME_MEDIA = {
-//       body: fs.createReadStream('/Users/maurirogel/Documents/Dartmouth/CV Final.pdf'),
-//     };
-//
-//     listFiles().then(files => {
-//       try {
-//         const auth = authObj.auth;
-//         let fileId = null;
-//         let i = 0;
-//
-//         while (fileId === null && i < files.length) {
-//           if (files[i].name === 'CV Final.pdf') {
-//             fileId = files[i].id;
-//             i++;
-//           }
-//         }
-//
-//         if (fileId === null) {
-//           res.json({ error: 'CV File not found on Google Drive.' });
-//           return;
-//         }
-//         drive.files.delete({ auth, fileId }, (err3) => {
-//           try {
-//             if (err3) res.json({ error: `${err3}` });
-//             drive.files.create({ auth, resource: RESUME_METADATA, media: RESUME_MEDIA }, (err, file) => {
-//               try {
-//                 if (err) res.json({ error: `${err}` });
-//                 else {
-//                   const resource = {
-//                     value: null,
-//                     type: 'anyone',
-//                     role: 'reader',
-//                     withLink: true,
-//                   };
-//
-//                   drive.permissions.create({ fileId: file.id, resource, auth }, (err1) => {
-//                     if (err1) res.json({ error: `${err1}` });
-//                     else {
-//                       console.log(file);
-//                       res.json({ msg: `Successfully updated resume ${file.name} with id ${file.id}` });
-//                     }
-//                   });
-//                 }
-//               } catch (error) {
-//                 res.json({ error: `${error}` });
-//               }
-//             });
-//           } catch (error) {
-//             res.json({ error: `${error}` });
-//           }
-//         });
-//       } catch (error) {
-//         res.json({ error: `${error}` });
-//       }
-//     })
-//     .catch(err => { res.json({ error: `${err}` }); });
-//   } catch (error) {
-//     res.json({ error: `${error}` });
-//   }
-// };
+export const updateResume = (req, res) => {
+  try {
+    const auth = req.user;
+    const RESUME_METADATA = { name: 'CV Final.pdf', mimeType: 'application/pdf' };
+    const RESUME_MEDIA = {
+      body: fs.createReadStream('/Users/maurirogel/Documents/Dartmouth/CV Final.pdf'),
+    };
+
+    listFiles(auth).then(files => {
+      try {
+        let fileId = null;
+        let i = 0;
+
+        while (fileId === null && i < files.length) {
+          if (files[i].name === 'CV Final.pdf') {
+            fileId = files[i].id;
+          }
+
+          i++;
+        }
+
+        deleteFileIfExists(auth, fileId)
+        .then(() => {
+          try {
+            drive.files.create({ auth, resource: RESUME_METADATA, media: RESUME_MEDIA }, (err, file) => {
+              try {
+                if (err) res.json({ error: `${err}` });
+                else {
+                  const resource = {
+                    value: null,
+                    type: 'anyone',
+                    role: 'reader',
+                    withLink: true,
+                  };
+
+                  drive.permissions.create({ fileId: file.id, resource, auth }, (err1) => {
+                    if (err1) res.json({ error: `${err1}` });
+                    else {
+                      console.log(file);
+                      res.json({ msg: `Successfully updated resume ${file.name} with id ${file.id}` });
+                    }
+                  });
+                }
+              } catch (error) {
+                res.json({ error: `${error}` });
+              }
+            });
+          } catch (error) {
+            res.json({ error: `${error}` });
+          }
+        })
+        .catch(err => { res.json({ error: `${err}` }); });
+      } catch (error) {
+        res.json({ error: `${error}` });
+      }
+    })
+    .catch(err => { res.json({ error: `${err}` }); });
+  } catch (error) {
+    res.json({ error: `${error}` });
+  }
+};
