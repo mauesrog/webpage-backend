@@ -9,6 +9,8 @@ const clientEmail = config.googleClientEmail;
 const privateKey = config.googlePrivateKey.replace(/\\\n/g, '\n')
 .replace(/(.*).$/, '$1');
 
+console.log(privateKey);
+
 const jwtClient = new google.auth.JWT(clientEmail, null, privateKey, scopes);
 
 const jwtLoginGoogle = new CustomStrategy((req, done) => {
