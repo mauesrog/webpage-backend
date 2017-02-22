@@ -1,18 +1,13 @@
 import CustomStrategy from 'passport-custom';
 import google from 'googleapis';
 import passport from 'passport';
-import fs from 'fs';
+import config from '../config';
 
 const scopes = ['https://www.googleapis.com/auth/drive'];
 
-let config = fs.readFileSync('app/computeService.json');
-
-if (config === null) throw new EvalError('Missing file');
-
-config = JSON.parse(config);
-
-const clientEmail = config.client_email;
-const privateKey = config.private_key;
+const clientEmail = config.googleClientEmail;
+const privateKey = config.googlePrivateKey.replace(/\\\n/g, '\n')
+.replace(/(.*).$/, '$1');
 
 const jwtClient = new google.auth.JWT(clientEmail, null, privateKey, scopes);
 
